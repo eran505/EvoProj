@@ -23,6 +23,7 @@ import org.evosuite.ga.ChromosomeFactory;
 import org.evosuite.ga.stoppingconditions.StoppingCondition;
 import org.evosuite.rmi.ClientServices;
 import org.evosuite.rmi.service.ClientState;
+import org.evosuite.statistics.RuntimeVariable;
 import org.evosuite.statistics.StatisticsSender;
 import org.evosuite.testsuite.TestSuiteChromosome;
 import org.evosuite.testsuite.TestSuiteFitnessFunction;
@@ -56,6 +57,8 @@ public class RandomTestSuiteStrategy extends RandomStrategy {
     TestSuiteChromosome suite = this.setUpSuiteChromosome(fitnessFunctions);
 
     ClientServices.getInstance().getClientNode().changeState(ClientState.SEARCH);
+
+    int num_generations = 0;
     while (!isFinished(suite, stoppingCondition)) {
       TestSuiteChromosome new_suite = factory.getChromosome();
 
@@ -69,7 +72,10 @@ public class RandomTestSuiteStrategy extends RandomStrategy {
         suite = new_suite;
         StatisticsSender.executedAndThenSendIndividualToMaster(new_suite);
       }
+
+      num_generations++;
     }
+    ClientServices.getInstance().getClientNode().trackOutputVariable(RuntimeVariable.Generations, num_generations);
 
     LoggingUtils.getEvoLogger().info("* Search Budget:");
     LoggingUtils.getEvoLogger().info("\t- " + stoppingCondition.toString());

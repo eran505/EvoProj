@@ -225,7 +225,7 @@ public class CoveredGoalsCountSystemTest extends SystemTestBase {
 
         String[] command = new String[] {
     		"-class", targetClass,
-    		"-generateRandom"
+    		"-generateRandomTestCase"
         };
 
         Object result = evosuite.parseCommandLine(command);

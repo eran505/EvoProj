@@ -114,8 +114,9 @@ public class TestGeneration {
 		return new Option[]{
 				new Option("generateSuite", "use whole suite generation. This is the default behavior"),
 				new Option("generateTests", "use individual test generation (old approach for reference purposes)"),
-				new Option("generateRandom", "use random test generation"),
-				new Option("generateNumRandom",true, "generate fixed number of random tests"),	
+				new Option("generateRandomTestCase", "use random test case generation"),
+				new Option("generateRandomTestSuite", "use random test suite generation"),
+				new Option("generateNRandomTestCases",true, "generate fixed number of random tests"),
 				new Option("regressionSuite", "generate a regression test suite"),
 				new Option("regressionTests", "generate a regression test suite of individual tests"),
 				new Option("generateMOSuite", "use many objective test generation (MOSA). "),
@@ -132,14 +133,16 @@ public class TestGeneration {
 			strategy = Strategy.ONEBRANCH;
 		} else if (line.hasOption("generateSuite")) {
 			strategy = Strategy.EVOSUITE;
-		} else if (line.hasOption("generateRandom")) {
-			strategy = Strategy.RANDOM;
-		} else if (line.hasOption("regressionSuite")) {
+		} else if (line.hasOption("generateRandomTestCase")) {
+			strategy = Strategy.RANDOM_TEST_CASE;
+		} else if (line.hasOption("generateRandomTestSuite")) {
+            strategy = Strategy.RANDOM_TEST_SUITE;
+        } else if (line.hasOption("regressionSuite")) {
 			strategy = Strategy.REGRESSION;
-		} else if (line.hasOption("generateNumRandom")) {
-			strategy = Strategy.RANDOM_FIXED;
+		} else if (line.hasOption("generateNRandomTestCases")) {
+			strategy = Strategy.RANDOM_N_TEST_CASES;
 			javaOpts.add("-Dnum_random_tests="
-					+ line.getOptionValue("generateNumRandom"));
+					+ line.getOptionValue("generateNRandomTestCases"));
 		} else if (line.hasOption("generateMOSuite")){
 			strategy = Strategy.MOSUITE;
 		} else if (line.hasOption("generateSuiteUsingDSE")) {
@@ -312,11 +315,14 @@ public class TestGeneration {
 		case ONEBRANCH:
 			cmdLine.add("-Dstrategy=OneBranch");
 			break;
-		case RANDOM:
-			cmdLine.add("-Dstrategy=Random");
+		case RANDOM_TEST_CASE:
+			cmdLine.add("-Dstrategy=Random_Test_Case");
 			break;
-		case RANDOM_FIXED:
-			cmdLine.add("-Dstrategy=Random_Fixed");
+		case RANDOM_TEST_SUITE:
+		    cmdLine.add("-Dstrategy=Random_Test_Suite");
+            break;
+		case RANDOM_N_TEST_CASES:
+			cmdLine.add("-Dstrategy=Random_N_Test_Cases");
 			break;
 		case REGRESSION:
 			cmdLine.add("-Dstrategy=Regression");

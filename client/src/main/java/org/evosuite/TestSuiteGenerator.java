@@ -707,9 +707,11 @@ public class TestSuiteGenerator {
 		switch (Properties.STRATEGY) {
 		case EVOSUITE:
 			return new WholeTestSuiteStrategy();
-		case RANDOM:
-			return new RandomTestStrategy();
-		case RANDOM_FIXED:
+		case RANDOM_TEST_CASE:
+			return new RandomTestCaseStrategy();
+		case RANDOM_TEST_SUITE:
+            return new RandomTestSuiteStrategy();
+		case RANDOM_N_TEST_CASES:
 			return new FixedNumRandomTestStrategy();
 		case ONEBRANCH:
 			return new IndividualTestStrategy();
